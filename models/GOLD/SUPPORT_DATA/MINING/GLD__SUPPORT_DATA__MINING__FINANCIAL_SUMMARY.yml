@@ -1,0 +1,41 @@
+version: 2
+
+models:
+  - name: GLD__SUPPORT_DATA__MINING__FINANCIAL_SUMMARY
+    description: "Monthly financial summary unified across Finance, Operations, and HR domains."
+    config:
+      materialized: table
+      tags: ["gold", "cross_domain", "financial_summary"]
+    tests:
+      - expect_table_row_count_to_be_between:
+          min_value: 1
+    columns:
+      - name: domain
+        description: "Source business domain (FINANCE, OPERATIONS, HR)."
+        tests:
+          - not_null
+          - expect_column_values_to_be_in_set:
+              value_set: ['FINANCE', 'OPERATIONS', 'HR']
+      - name: region
+        description: "Region of the transactions."
+      - name: country
+        description: "Country of the transactions."
+      - name: status
+        description: "Transaction status group."
+      - name: transaction_month
+        description: "Month bucket (date_trunc to month)."
+      - name: transaction_count
+        description: "Number of transactions in the period."
+        tests:
+          - expect_column_values_to_be_between:
+              min_value: 1
+      - name: total_amount
+        description: "Sum of transaction amounts."
+        tests:
+          - expect_column_values_to_be_between:
+              min_value: 0
+      - name: total_revenue
+        description: "Sum of revenues generated."
+        tests:
+          - expect_column_values_to_be_between:
+              min_value: 0

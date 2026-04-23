@@ -1,0 +1,9 @@
+{% macro get_masking_policy_registry() %}
+  {% set registry = {
+    'MASK_EMAIL':          'DEMO_ENTERPRISE_DBT_DB.GOVERNANCE.MASK_EMAIL',
+    'MASK_PHONE':          'DEMO_ENTERPRISE_DBT_DB.GOVERNANCE.MASK_PHONE',
+    'MASK_ACCOUNT_NUMBER': 'DEMO_ENTERPRISE_DBT_DB.GOVERNANCE.MASK_ACCOUNT_NUMBER',
+    'MASK_CREDIT_CARD':    'DEMO_ENTERPRISE_DBT_DB.GOVERNANCE.MASK_CREDIT_CARD'
+  } %}
+  {{ return(registry) }}
+{% endmacro %}

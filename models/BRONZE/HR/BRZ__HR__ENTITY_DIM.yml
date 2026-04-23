@@ -1,0 +1,35 @@
+version: 2
+
+models:
+  - name: BRZ__HR__ENTITY_DIM
+    description: "Raw ingest of the HR entity dimension from DEMO_ENTERPRISE_DB.HR."
+    config:
+      materialized: view
+      tags: ["bronze", "hr", "entity"]
+    columns:
+      - name: entity_id
+        description: "Primary key of the entity."
+      - name: entity_name
+        description: "Name of the entity."
+      - name: email
+        description: "Entity email address (PII — masked for non-privileged roles)."
+        masking_policy: MASK_EMAIL
+      - name: phone
+        description: "Entity phone number (PII — masked for non-privileged roles)."
+        masking_policy: MASK_PHONE
+      - name: account_number
+        description: "Account number (Sensitive — masked for non-privileged roles)."
+        masking_policy: MASK_ACCOUNT_NUMBER
+      - name: credit_card
+        description: "Credit card number (Sensitive — masked for non-privileged roles)."
+        masking_policy: MASK_CREDIT_CARD
+      - name: status
+        description: "Current status of the entity."
+      - name: region
+        description: "Region of the entity."
+      - name: country
+        description: "Country of the entity."
+      - name: created_at
+        description: "Timestamp when the entity was created."
+      - name: updated_at
+        description: "Timestamp when the entity was last updated."

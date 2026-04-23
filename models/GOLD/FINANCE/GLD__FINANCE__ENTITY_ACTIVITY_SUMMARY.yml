@@ -1,0 +1,41 @@
+version: 2
+
+models:
+  - name: GLD__FINANCE__ENTITY_ACTIVITY_SUMMARY
+    description: "Finance entity-level activity rollup: total activities, amounts, and first/last event timestamps."
+    config:
+      materialized: table
+      tags: ["gold", "finance", "entity_activity_summary"]
+    tests:
+      - expect_table_row_count_to_be_between:
+          min_value: 1
+    columns:
+      - name: entity_id
+        description: "Primary key — one row per Finance entity."
+        tests:
+          - not_null
+          - unique
+          - expect_column_values_to_not_be_null
+      - name: entity_name
+        description: "Name of the entity."
+        tests:
+          - not_null
+      - name: region
+        description: "Region of the entity."
+      - name: country
+        description: "Country of the entity."
+      - name: status
+        description: "Current status of the entity."
+      - name: total_activities
+        description: "Count of distinct activity fact records linked to the entity."
+        tests:
+          - expect_column_values_to_be_between:
+              min_value: 0
+      - name: total_activity_amount
+        description: "Sum of all activity amounts for the entity."
+      - name: total_quantity
+        description: "Sum of all quantities across activities."
+      - name: first_activity_ts
+        description: "Earliest activity event timestamp for the entity."
+      - name: last_activity_ts
+        description: "Most recent activity event timestamp for the entity."

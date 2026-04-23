@@ -1,0 +1,12 @@
+version: 2
+
+sources:
+  - name: operations
+    database: DEMO_ENTERPRISE_DB
+    schema: OPERATIONS
+    tables:
+      - name: entity_dim
+      - name: activity_fact
+      - name: financial_fact
+      - name: location_dim
+      - name: reference_status

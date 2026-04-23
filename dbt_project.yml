@@ -1,0 +1,44 @@
+name: 'demo_enterprise'
+version: '1.0.0'
+config-version: 2
+
+profile: 'demo_enterprise'
+
+model-paths: ["models"]
+seed-paths: ["seeds"]
+test-paths: ["tests"]
+analysis-paths: ["analyses"]
+macro-paths: ["macros"]
+
+target-path: "target"
+clean-targets:
+  - "target"
+  - "dbt_packages"
+
+on-run-end:
+  - "{{ log_test_results() }}"
+
+models:
+  demo_enterprise:
+    +persist_docs:
+      relation: true
+      columns: true
+    +post-hook:
+      - "{{ apply_snowflake_tags() }}"
+      - "{{ apply_masking_policies() }}"
+    BRONZE:
+      +materialized: view
+      +schema: BRONZE
+    SILVER:
+      +materialized: table
+      +schema: SILVER
+    GOLD:
+      +materialized: table
+      +schema: GOLD
+
+vars:
+  masking_policy_registry:
+    MASK_EMAIL:          "DEMO_ENTERPRISE_DBT_DB.GOVERNANCE.MASK_EMAIL"
+    MASK_PHONE:          "DEMO_ENTERPRISE_DBT_DB.GOVERNANCE.MASK_PHONE"
+    MASK_ACCOUNT_NUMBER: "DEMO_ENTERPRISE_DBT_DB.GOVERNANCE.MASK_ACCOUNT_NUMBER"
+    MASK_CREDIT_CARD:    "DEMO_ENTERPRISE_DBT_DB.GOVERNANCE.MASK_CREDIT_CARD"

@@ -1,0 +1,55 @@
+version: 2
+
+models:
+  - name: SLV__FINANCE__ACTIVITY_FACT
+    description: "Cleaned and typed Finance activity fact. Null fact_ids excluded."
+    config:
+      materialized: table
+      tags: ["silver", "finance", "activity"]
+    tests:
+      - expect_table_row_count_to_be_between:
+          min_value: 1
+    columns:
+      - name: fact_id
+        description: "Primary key of the activity fact record."
+        tests:
+          - not_null
+          - unique
+          - expect_column_values_to_not_be_null
+      - name: entity_id
+        description: "Foreign key to the Finance entity dimension."
+        tests:
+          - not_null
+          - expect_column_values_to_not_be_null
+      - name: event_ts
+        description: "Timestamp of the activity event."
+        tests:
+          - not_null
+          - expect_column_values_to_not_be_null
+      - name: status
+        description: "Status of the activity."
+        tests:
+          - expect_column_values_to_not_be_null
+      - name: quantity
+        description: "Quantity associated with the activity (typed to NUMERIC(12,2))."
+        tests:
+          - expect_column_values_to_be_between:
+              min_value: 0
+      - name: price
+        description: "Unit price (typed to NUMERIC(18,2))."
+        tests:
+          - expect_column_values_to_be_between:
+              min_value: 0
+      - name: amount
+        description: "Total monetary amount (typed to NUMERIC(18,2))."
+        tests:
+          - expect_column_values_to_be_between:
+              min_value: 0
+      - name: location_id
+        description: "Foreign key to the location dimension."
+      - name: region
+        description: "Region where the activity occurred."
+      - name: country
+        description: "Country where the activity occurred."
+      - name: channel
+        description: "Channel through which the activity was recorded."

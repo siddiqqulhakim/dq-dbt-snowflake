@@ -1,0 +1,35 @@
+version: 2
+
+models:
+  - name: SLV__OPERATIONS__FINANCIAL_FACT
+    description: "Cleaned and typed Operations financial fact. Null fact_ids excluded."
+    config:
+      materialized: table
+      tags: ["silver", "operations", "financial"]
+    tests:
+      - expect_table_row_count_to_be_between:
+          min_value: 1
+    columns:
+      - name: fact_id
+        description: "Primary key of the financial fact record."
+        tests:
+          - not_null
+          - unique
+      - name: entity_id
+        description: "Foreign key to the Operations entity dimension."
+        tests:
+          - not_null
+      - name: transaction_ts
+        description: "Timestamp of the financial transaction."
+      - name: amount
+        description: "Financial amount (typed to NUMERIC(18,2))."
+        tests:
+          - expect_column_values_to_be_between:
+              min_value: 0
+      - name: revenue
+        description: "Revenue generated (typed to NUMERIC(18,2))."
+        tests:
+          - expect_column_values_to_be_between:
+              min_value: 0
+      - name: cost
+        description: "Transaction cost (typed to NUMERIC(18,2))."

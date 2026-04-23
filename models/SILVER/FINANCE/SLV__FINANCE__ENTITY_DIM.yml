@@ -1,0 +1,37 @@
+version: 2
+
+models:
+  - name: SLV__FINANCE__ENTITY_DIM
+    description: "Deduplicated and cleaned Finance entity dimension. Latest record per entity_id."
+    config:
+      materialized: table
+      tags: ["silver", "finance", "entity"]
+    tests:
+      - expect_table_row_count_to_be_between:
+          min_value: 1
+    columns:
+      - name: entity_id
+        description: "Primary key of the entity (deduplicated)."
+        tests:
+          - not_null
+          - unique
+          - expect_column_values_to_not_be_null
+      - name: entity_name
+        description: "Name of the entity."
+        tests:
+          - not_null
+          - expect_column_values_to_not_be_null
+      - name: status
+        description: "Current status of the entity."
+        tests:
+          - expect_column_values_to_not_be_null
+      - name: region
+        description: "Region of the entity."
+        tests:
+          - expect_column_values_to_not_be_null
+      - name: country
+        description: "Country of the entity."
+      - name: created_at
+        description: "Timestamp when the entity was created."
+      - name: updated_at
+        description: "Timestamp of the latest update (used for deduplication)."

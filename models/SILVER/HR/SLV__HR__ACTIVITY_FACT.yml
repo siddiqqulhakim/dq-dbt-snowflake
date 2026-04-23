@@ -1,0 +1,37 @@
+version: 2
+
+models:
+  - name: SLV__HR__ACTIVITY_FACT
+    description: "Cleaned and typed HR activity fact. Null fact_ids excluded."
+    config:
+      materialized: table
+      tags: ["silver", "hr", "activity"]
+    tests:
+      - expect_table_row_count_to_be_between:
+          min_value: 1
+    columns:
+      - name: fact_id
+        description: "Primary key of the activity fact record."
+        tests:
+          - not_null
+          - unique
+          - expect_column_values_to_not_be_null
+      - name: entity_id
+        description: "Foreign key to the HR entity dimension."
+        tests:
+          - not_null
+      - name: amount
+        description: "Total monetary amount (typed to NUMERIC(18,2))."
+        tests:
+          - expect_column_values_to_be_between:
+              min_value: 0
+      - name: event_ts
+        description: "Timestamp of the activity event."
+      - name: status
+        description: "Status of the activity."
+      - name: region
+        description: "Region where the activity occurred."
+      - name: country
+        description: "Country where the activity occurred."
+      - name: channel
+        description: "Channel through which the activity was recorded."

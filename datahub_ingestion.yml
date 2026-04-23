@@ -1,0 +1,58 @@
+source:
+  type: dbt
+  config:
+    manifest_path: "target/manifest.json"
+    catalog_path: "target/catalog.json"
+    run_results_paths:
+      - "target/run_results.json"
+    target_platform: snowflake
+
+    write_semantics: OVERRIDE
+
+    enable_meta_mapping: true
+    enable_query_tag_mapping: false
+    enable_owner_extraction: true
+
+    strip_user_ids_from_email: false
+
+    entities_enabled:
+      models: Yes
+      sources: Yes
+      seeds: Yes
+      snapshots: Yes
+      test_definitions: Yes
+      test_results: Yes
+
+    node_name_pattern:
+      deny: []
+      allow:
+        - ".*"
+
+    meta_mapping:
+      layer:
+        match: ".*"
+        operation: "add_tag"
+        config:
+          tag: "dbt:layer:{{ $match }}"
+      domain:
+        match: ".*"
+        operation: "add_tag"
+        config:
+          tag: "dbt:domain:{{ $match }}"
+
+    tag_prefix: "dbt:"
+
+    infer_dbt_schemas: true
+
+    include_column_lineage: true
+
+    include_env_in_assertion_guid: false
+
+sink:
+  type: datahub-rest
+  config:
+#    server: "https://dev-datahub.amman.co.id/api/gms"
+#    token: "eyJhbGciOiJIUzI1NiJ9.eyJhY3RvclR5cGUiOiJVU0VSIiwiYWN0b3JJZCI6ImRhdGFodWIiLCJ0eXBlIjoiUEVSU09OQUwiLCJ2ZXJzaW9uIjoiMiIsImp0aSI6ImNmM2EzYjNjLTg3YTAtNGMzMC1iYjNjLTE3OTE4NTVmZDMyYSIsInN1YiI6ImRhdGFodWIiLCJleHAiOjE3Nzk1MjE5NTEsImlzcyI6ImRhdGFodWItbWV0YWRhdGEtc2VydmljZSJ9.X053DT3Hg1QDdB4XWCHG6XWaGsojXaMxJ2HgQxA75Wc"
+
+    server: "http://localhost:8080"
+    token: ""

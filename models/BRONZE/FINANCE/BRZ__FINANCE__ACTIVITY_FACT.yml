@@ -1,0 +1,31 @@
+version: 2
+
+models:
+  - name: BRZ__FINANCE__ACTIVITY_FACT
+    description: "Raw ingest of the Finance activity fact table from DEMO_ENTERPRISE_DB.FINANCE."
+    config:
+      materialized: view
+      tags: ["bronze", "finance", "activity"]
+    columns:
+      - name: fact_id
+        description: "Primary key of the activity fact record."
+      - name: entity_id
+        description: "Foreign key to the entity dimension."
+      - name: location_id
+        description: "Foreign key to the location dimension."
+      - name: event_ts
+        description: "Timestamp of the activity event."
+      - name: status
+        description: "Status of the activity."
+      - name: region
+        description: "Region where the activity occurred."
+      - name: country
+        description: "Country where the activity occurred."
+      - name: channel
+        description: "Channel through which the activity was recorded."
+      - name: quantity
+        description: "Quantity associated with the activity."
+      - name: price
+        description: "Unit price of the activity."
+      - name: amount
+        description: "Total monetary amount of the activity."

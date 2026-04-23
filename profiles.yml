@@ -1,0 +1,13 @@
+demo_enterprise:
+  target: dev
+  outputs:
+    dev:
+      type: snowflake
+      account: ARAYDYB-AL07847
+      user: MSID9228
+      password: Ch@t1m3PVJ!!!!
+      role: ACCOUNTADMIN
+      database: DEMO_ENTERPRISE_DBT_DB
+      warehouse: DEMO_ENTERPRISE_WH
+      schema: PUBLIC
+      threads: 4
